@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- text input search term, number, start, end -->
+    <!-- https://api.nytimes.com/svc/search/v2/articlesearch.json?q={search input}&facet_fields=source&facet=true&begin_date={start input}&end_date={end input}&api-key=nCzjGyt28CsMePzheFrADtAf6eOW5eIp -->
+    <form>
+        <input id="term" />
+        <input id="articleNum" />
+        <input id="start-year"/>
+        <input id="end-year" />
+        <button id="searchButton">Search</button>
+    </form>
+
+    <div id="articleBox"></div>
+
+    <script type="text/javascript">
+
+
+    $("#searchButton").click(function(event){
+        event.preventDefault();
+        
+        var searchTerm = $("#term").val();
+        var numRecords = $("#articleNum").val();
+        var beginDate = $("#start-year").val();
+        var endDate = $("#end-year").val();
+        
+        var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + searchTerm + "&facet_fields=source&facet=true&begin_date=" + beginDate + "0101&end_date" + endDate + "1231&api-key=nCzjGyt28CsMePzheFrADtAf6eOW5eIp"
+
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+        }).then(function(article) {
+          for (i=0; i<numRecords; i++){
+            
+            var articleTitle = $(article.response.docs.abstract)
+            var articleURL = $(article.response.docs.web_url)
+            console.log(articleTitle)
+            console.log(articleURL)
+          }
+        })
+
+    })
+    
+    </script>
+</body>
+</html>
